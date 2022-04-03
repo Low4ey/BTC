@@ -31,20 +31,20 @@ class crypto:
         anim = FuncAnimation(plt.gcf(), self.plotting, interval=1000)
         plt.show()
 
-def Start(crypto):
-    crypto.x_cords.append(datetime.now())
-    crypto.y_cords.append(crypto.get_crypto_price())
+    def Start(self):
+        self.x_cords.append(datetime.now())
+        self.y_cords.append(self.get_crypto_price())
 
-    plt.cla()
-    plt.gcf().canvas.manager.set_window_title(f"Live Plotting {crypto.crypto_curr}")
-    plt.xlabel('Date')
-    plt.ylabel('Price($)')
-    plt.plot_date(crypto.x_cords,crypto.y_cords,linestyle="solid",ms=0)
-    plt.tight_layout()
+        plt.cla()
+        plt.gcf().canvas.manager.set_window_title(f"Live Plotting {self.crypto_curr}")
+        plt.xlabel('Date')
+        plt.ylabel('Price($)')
+        plt.plot_date(self.x_cords,self.y_cords,linestyle="solid",ms=0)
+        plt.tight_layout()
 
 Btc=crypto("BTC","USD")
-Start(Btc)
-ani = FuncAnimation(plt.gcf(), Start, interval=1000)
+Btc.Start()
+# ani = FuncAnimation(plt.gcf(), Btc.Start, interval=1000)
 plt.show()
 
 # Btc.insertion()

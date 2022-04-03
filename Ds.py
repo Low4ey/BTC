@@ -1,61 +1,87 @@
-
 from pycoingecko import CoinGeckoAPI
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from datetime import datetime
-cg=CoinGeckoAPI()
+import cryptocompare as cc
+cg = CoinGeckoAPI()
+
 
 class crypto:
-    def __init__(self,crypto,currency):
-        self.x_cords=[]
-        self.y_cords=[]
-        self.crypto_curr=crypto
-        self.vs_currency=currency
+    def __init__(self, crypto, currency):
+        self.x_cords = []
+        self.y_cords = []
+        self.crypto_curr = crypto
+        self.vs_currency = currency
         plt.title(self.crypto_curr)
-    
+
     def insertion(self):
         self.x_cords.append(datetime.now())
-        self.y_cords.append(cg.get_price(ids=self.crypto_curr,vs_currencies=self.vs_currency)[self.crypto_curr][self.vs_currency])
+        self.y_cords.append(cc.get_price(self.crypto_curr,self.vs_currency)[self.crypto_curr][self.vs_currency])
     
+    def get_crypto_price(self):
+        return cc.get_price(self.crypto_curr,self.vs_currency)[self.crypto_curr][self.vs_currency]
+   
     def plotting(self):
-        plt.plot_date(self.x_cords,self.y_cords,linestyle="solid")
-    
-    def start(self):
-        plt.gcf().canvas.manager.set_window_title(f"Live Plotting {self.crypto_curr}")
-        plt.tight_layout()
-        anim=FuncAnimation(plt.gcf(),self.plotting,interval=1000)
-        plt.show()
-        
+        plt.plot_date(self.x_cords, self.y_cords, linestyle="solid")
 
-# Btc=crypto("bitcoin","usd")
+    def start(self):
+        plt.gcf().canvas.manager.set_window_title(
+            f"Live Plotting {self.crypto_curr}")
+        plt.tight_layout()
+        anim = FuncAnimation(plt.gcf(), self.plotting, interval=1000)
+        plt.show()
+
+def Start(crypto):
+    crypto.x_cords.append(datetime.now())
+    crypto.y_cords.append(crypto.get_crypto_price())
+
+    plt.cla()
+    plt.gcf().canvas.manager.set_window_title(f"Live Plotting {crypto.crypto_curr}")
+    plt.xlabel('Date')
+    plt.ylabel('Price($)')
+    plt.plot_date(crypto.x_cords,crypto.y_cords,linestyle="solid",ms=0)
+    plt.tight_layout()
+
+Btc=crypto("BTC","USD")
+Start(Btc)
+ani = FuncAnimation(plt.gcf(), Start, interval=1000)
+plt.show()
+
 # Btc.insertion()
 # Btc.plotting()
 # Btc.start()
 # print(Btc.x_cords)
 # print(Btc.y_cords)
+# import matplotlib.pyplot as plt
+# from matplotlib.animation import FuncAnimation
+# import cryptocompare
+# from datetime import datetime 
 
-plt.plot_date(datetime.now(),cg.get_price(ids="bitcoin",vs_currencies="eth")["bitcoin"]["eth"])
-plt.show()
+# plt.style.use('seaborn')
 
+# x_vals = []
+# y_vals = []
+
+# def get_crypto_price(cryptocurrency,currency):
+#     return cryptocompare.get_price(cryptocurrency,currency)[cryptocurrency][currency]
+
+# def get_crypto_name(cryptocurrency):
+#     return cryptocompare.get_coin_list()[cryptocurrency]['FullName']
+
+# def animate(i):
+#     x_vals.append(datetime.now())
+#     y_vals.append(get_crypto_price('BTC','USD'))
+
+#     plt.cla()
+#     plt.title(get_crypto_name('BTC') + ' Price Live Plotting')
+#     plt.gcf().canvas.manager.set_window_title('Live Plotting Cryptocurrency')
     
-
-
+#     plt.xlabel('Date')
+#     plt.ylabel('Price($)')
+#     plt.plot_date(x_vals,y_vals,linestyle="solid",ms=0)
+#     plt.tight_layout()
     
+   
+# ani = FuncAnimation(plt.gcf(), animate, interval=1000)
 
-
-# def plotting(crypto_curr,currency):
-#     x_cords.append(datetime.now())
-#     y_cords.append(cg.get_price(ids=crypto_curr,vs_currencies=currency)[crypto_curr][currency])
-
-#     plt.title()
-
-
-
-# plotting("bitcoin","eth")
-# print(x_cords)
-# print(y_cords)
-
-
-
-# plt.plot(x_cords,y_cords)
 # plt.show()

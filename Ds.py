@@ -12,9 +12,6 @@ class crypto:
         self.vs_currency = currency
         plt.title(self.crypto_curr)
 
-    def insertion(self):
-        self.x_cords.append(datetime.now())
-        self.y_cords.append(cc.get_price(self.crypto_curr,self.vs_currency)[self.crypto_curr][self.vs_currency])
     
     def get_crypto_price(self):
         return cc.get_price(self.crypto_curr,self.vs_currency)[self.crypto_curr][self.vs_currency]
@@ -44,6 +41,17 @@ class crypto:
         self.ani = FuncAnimation(plt.gcf(), self.Start, interval=1000)
 
 
-Btc=crypto("BTC","USD")
-Btc.animate()
-plt.show()
+while True:
+    print("Press 1 for Get live data Crypto Currency : \n Press 2 to get VS Graph ")
+    ch=input()
+    if ch==1:
+        crypto_curr=input("Enter Crypto Currency Code : ").upper()
+        currency=input("Enter Country Currency : ").upper()
+        crypt=crypto(crypto_curr,currency)
+        crypt.animate()
+        plt.show()
+    if ch==2:
+        crypto_curr=input("Enter Crypto Currency Code : ").upper()
+        crypto_curr_2=input("Enter Second Crypto Currency Code : ").upper()
+        currency=input("Enter Country Currency : ").upper()
+        crypt=crypto(crypto_curr,currency)
